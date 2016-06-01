@@ -92,9 +92,19 @@ succZero =
     apply churchSucc (churchEncode 0)
 
 
-onePlusOne : Expression
-onePlusOne =
-    apply (apply churchPlus (churchEncode 1)) (churchEncode 1)
+onePlusTwo : Expression
+onePlusTwo =
+    apply2 (ident "+") (ident "1") (ident "2")
+
+
+plusAndMinusExample : Expression
+plusAndMinusExample =
+    apply2 (ident "+")
+        (apply2 (ident "-")
+            (ident "11")
+            (ident "2")
+        )
+        (ident "5")
 
 
 isZeroZero : Expression

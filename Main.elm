@@ -30,7 +30,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { machineState = SECD.constructMachine (SECD.Expressions.isZeroZero)
+    ( { machineState = SECD.constructMachine (SECD.Expressions.onePlusTwo)
       , history = []
       , error = Nothing
       }
