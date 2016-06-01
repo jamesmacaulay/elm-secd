@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import SECD exposing (SECD)
+import SECD.Expressions
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -29,7 +30,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { machineState = SECD.identityOfIdentityMachine
+    ( { machineState = SECD.constructMachine (SECD.Expressions.isZeroZero)
       , history = []
       , error = Nothing
       }

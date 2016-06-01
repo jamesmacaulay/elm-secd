@@ -1,53 +1,6 @@
 module SECD exposing (..)
 
 
-identityLambda : Expression
-identityLambda =
-    Lambda (SingleVariable "x")
-        (Identifier "x")
-
-
-churchEncode : Int -> Expression
-churchEncode n =
-    let
-        body n' =
-            if n' == 0 then
-                (Identifier "x")
-            else
-                Combination (Identifier "f") (body (n - 1))
-    in
-        Lambda (SingleVariable "f")
-            (Lambda (SingleVariable "x")
-                (body n)
-            )
-
-
-churchPlus : Expression
-churchPlus =
-    Lambda (SingleVariable "m")
-        (Lambda (SingleVariable "n")
-            (Lambda (SingleVariable "f")
-                (Lambda (SingleVariable "x")
-                    (Combination (Combination (Identifier "m") (Identifier "f"))
-                        (Combination (Combination (Identifier "n") (Identifier "f"))
-                            (Identifier "x")
-                        )
-                    )
-                )
-            )
-        )
-
-
-identityOfIdentityMachine : SECD
-identityOfIdentityMachine =
-    constructMachine (Combination identityLambda identityLambda)
-
-
-onePlusOneMachine : SECD
-onePlusOneMachine =
-    constructMachine (Combination (Combination churchPlus (churchEncode 1)) (churchEncode 1))
-
-
 constructMachine : Expression -> SECD
 constructMachine expression =
     ( [], [], [ AE expression ], NoDump )
@@ -134,7 +87,6 @@ transform secd =
     case secd of
         ( hS :: _, _, [], Dump ( s', e', c', d' ) ) ->
             Ok ( hS :: s', e', c', d' )
-                |> Debug.log "( hS :: _, _, [], Dump ( s', e', c', d' ) )"
 
         ( [], _, [], _ ) ->
             Err "empty control with empty stack"
@@ -149,11 +101,9 @@ transform secd =
 
                 Just value ->
                     Ok ( value :: stack, env, tControl, dump )
-                        |> Debug.log "( stack, env, (AE (Identifier name)) :: tControl, dump )"
 
         ( stack, env, (AE (Lambda boundVars body)) :: tControl, dump ) ->
             Ok ( Closure ( env, boundVars ) body :: stack, env, tControl, dump )
-                |> Debug.log "( stack, env, (AE (Lambda boundVars body)) :: tControl, dump )"
 
         ( (Closure ( closureBaseEnv, boundVars ) expression) :: sndStack :: ttStack, env, Ap :: tControl, dump ) ->
             assoc boundVars sndStack
@@ -166,7 +116,6 @@ transform secd =
                                             Dump ( ttStack, env, tControl, dump )
                                     in
                                         Ok ( [], newEnv, [ AE expression ], dump' )
-                                            |> Debug.log "( (Closure ( closureBaseEnv, boundVars ) expression) :: sndStack :: ttStack, env, Ap :: tControl, dump )"
                                  )
 
         ( fstStack :: sndStack :: ttStack, env, Ap :: tControl, dump ) ->
@@ -174,7 +123,6 @@ transform secd =
 
         ( stack, env, (AE (Combination rand rator)) :: tControl, dump ) ->
             Ok ( stack, env, AE rand :: AE rator :: Ap :: tControl, dump )
-                |> Debug.log "( stack, env, (AE (Combination rand rator)) :: tControl, dump )"
 
         _ ->
             Err "I don't know what to do"
