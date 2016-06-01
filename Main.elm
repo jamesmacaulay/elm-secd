@@ -43,6 +43,7 @@ init =
 
 type Msg
     = StepForward
+    | StepBack
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -52,7 +53,7 @@ update msg model =
             case SECD.transform model.machineState of
                 Ok newState ->
                     ( { machineState = newState
-                      , history = newState :: model.history
+                      , history = model.machineState :: model.history
                       , error = Nothing
                       }
                     , Cmd.none
@@ -60,6 +61,19 @@ update msg model =
 
                 Err errorMessage ->
                     ( { model | error = Just errorMessage }
+                    , Cmd.none
+                    )
+
+        StepBack ->
+            case model.history of
+                [] ->
+                    ( { model | error = Just "can't go back any further!" }, Cmd.none )
+
+                previousState :: restOfHistory ->
+                    ( { machineState = previousState
+                      , history = restOfHistory
+                      , error = Nothing
+                      }
                     , Cmd.none
                     )
 
@@ -94,7 +108,8 @@ headerView =
 controlsView : Model -> Html Msg
 controlsView model =
     div []
-        [ button [ onClick StepForward ] [ text "step" ]
+        [ button [ onClick StepBack ] [ text "StepBack" ]
+        , button [ onClick StepForward ] [ text "StepForward" ]
         , span [] [ text " " ]
         , errorView model.error
         ]
