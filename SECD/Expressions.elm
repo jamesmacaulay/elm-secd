@@ -3,6 +3,31 @@ module SECD.Expressions exposing (..)
 import SECD exposing (..)
 
 
+helloWorld : Expression
+helloWorld =
+    ident "hello world"
+
+
+helloWorldIdentity : Expression
+helloWorldIdentity =
+    apply identityLambda (ident "hello world")
+
+
+onePlusTwo : Expression
+onePlusTwo =
+    apply2 (ident "+") (ident "1") (ident "2")
+
+
+plusAndMinusExample : Expression
+plusAndMinusExample =
+    apply2 (ident "+")
+        (apply2 (ident "-")
+            (ident "11")
+            (ident "2")
+        )
+        (ident "5")
+
+
 fn : String -> Expression -> Expression
 fn var body =
     Lambda (SingleVariable var) body
@@ -90,21 +115,6 @@ identityOfIdentity =
 succZero : Expression
 succZero =
     apply churchSucc (churchEncode 0)
-
-
-onePlusTwo : Expression
-onePlusTwo =
-    apply2 (ident "+") (ident "1") (ident "2")
-
-
-plusAndMinusExample : Expression
-plusAndMinusExample =
-    apply2 (ident "+")
-        (apply2 (ident "-")
-            (ident "11")
-            (ident "2")
-        )
-        (ident "5")
 
 
 isZeroZero : Expression

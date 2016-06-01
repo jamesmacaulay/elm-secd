@@ -4,8 +4,13 @@ import Dict exposing (Dict)
 import String
 
 
-constructMachine : Expression -> SECD
-constructMachine expression =
+empty : SECD
+empty =
+    ( [], [], [], NoDump )
+
+
+construct : Expression -> SECD
+construct expression =
     ( [], [], [ AE expression ], NoDump )
 
 
@@ -143,18 +148,11 @@ basicFunctions =
 applyPrimitiveToOperand : Value -> Value -> Result String Value
 applyPrimitiveToOperand operand operator =
     case operator of
-        Atom name ->
-            (Dict.get name basicFunctions
-                |> Maybe.map BasicFunction
-                |> Result.fromMaybe (name ++ " is not a function")
-            )
-                `Result.andThen` (applyPrimitiveToOperand operand)
-
         BasicFunction f ->
             f operand
 
-        _ ->
-            Err "expected an atom or a basic function but got something else!"
+        x ->
+            Err ("expected a basic function but got " ++ toString x)
 
 
 transform : SECD -> Result String SECD
@@ -172,7 +170,12 @@ transform secd =
         ( stack, env, (AE (Identifier name)) :: tControl, dump ) ->
             case location env name of
                 Nothing ->
-                    Ok ( Atom name :: stack, env, tControl, dump )
+                    case Dict.get name basicFunctions of
+                        Nothing ->
+                            Ok ( Atom name :: stack, env, tControl, dump )
+
+                        Just f ->
+                            Ok ( BasicFunction f :: stack, env, tControl, dump )
 
                 Just value ->
                     Ok ( value :: stack, env, tControl, dump )
