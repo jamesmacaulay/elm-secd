@@ -109,18 +109,27 @@ headerView =
 controlsView : Model -> Html Msg
 controlsView model =
     div []
-        [ button [ onClick StepBack ] [ text "StepBack" ]
-        , button [ onClick StepForward ] [ text "StepForward" ]
+        [ button [ onClick StepBack, disabled (List.isEmpty model.history) ] [ text "StepBack" ]
+        , button [ onClick StepForward, disabled (SECD.isDone model.machine) ] [ text "StepForward" ]
         , span [] [ text " " ]
+        , doneView model.machine
         , errorView model.error
+        ]
+
+
+doneView : SECD.Machine -> Html Msg
+doneView machine =
+    span [ style [ ( "color", "green" ) ] ]
+        [ if SECD.isDone machine then
+            text "done!"
+          else
+            text ""
         ]
 
 
 errorView : Maybe String -> Html Msg
 errorView maybeError =
-    span
-        [ style [ ( "color", "red" ) ]
-        ]
+    span [ style [ ( "color", "red" ) ] ]
         [ maybeError |> Maybe.withDefault "" |> text ]
 
 

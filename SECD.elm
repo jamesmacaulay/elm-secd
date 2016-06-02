@@ -115,6 +115,16 @@ derive new base =
     new ++ base
 
 
+isDone : Machine -> Bool
+isDone machine =
+    case machine.state of
+        ( _, _, [], NoDump ) ->
+            True
+
+        _ ->
+            False
+
+
 transform : Machine -> Result String Machine
 transform ({ state, basicFunctions } as machine) =
     case state of
@@ -164,4 +174,4 @@ transform ({ state, basicFunctions } as machine) =
             Ok { machine | state = ( stack, env, AE rator :: AE rand :: Ap :: tControl, dump ) }
 
         _ ->
-            Err "I don't know what to do"
+            Err "invalid state: ¯\\_(ツ)_/¯"
