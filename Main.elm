@@ -149,7 +149,10 @@ headerView =
         [ h1 [] [ text "elm-secd" ]
         , p [] [ a [ href "https://github.com/jamesmacaulay/elm-secd" ] [ text "source on github" ] ]
         , p []
-            [ text "This is an implementation of Peter Landin's "
+            [ text "This is an "
+            , a [ href "http://elm-lang.org/" ]
+                [ text "Elm" ]
+            , text " implementation of Peter Landin's "
             , a [ href "https://en.wikipedia.org/wiki/SECD_machine" ]
                 [ text "SECD machine" ]
             , text ", as described his 1964 paper "
