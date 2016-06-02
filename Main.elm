@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import SECD exposing (SECD)
-import SECD.Expressions
+import SECD.Examples
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -22,15 +22,15 @@ main =
 
 
 type alias Model =
-    { machineState : SECD
-    , history : List SECD
+    { machine : SECD.Machine
+    , history : List SECD.Machine
     , error : Maybe String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { machineState = SECD.construct SECD.Expressions.helloWorld
+    ( { machine = SECD.Examples.plusAndMinus
       , history = []
       , error = Nothing
       }
@@ -51,10 +51,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         StepForward ->
-            case SECD.transform model.machineState of
-                Ok newState ->
-                    ( { machineState = newState
-                      , history = model.machineState :: model.history
+            case SECD.transform model.machine of
+                Ok machine ->
+                    ( { machine = machine
+                      , history = model.machine :: model.history
                       , error = Nothing
                       }
                     , Cmd.none
@@ -70,8 +70,8 @@ update msg model =
                 [] ->
                     ( { model | error = Just "can't go back any further!" }, Cmd.none )
 
-                previousState :: restOfHistory ->
-                    ( { machineState = previousState
+                previousMachine :: restOfHistory ->
+                    ( { machine = previousMachine
                       , history = restOfHistory
                       , error = Nothing
                       }
@@ -97,7 +97,7 @@ view model =
     div [ style [ ( "padding", "20px" ) ] ]
         [ headerView
         , controlsView model
-        , machineStateView model.machineState
+        , machineStateView model.machine.state
         ]
 
 
@@ -124,7 +124,7 @@ errorView maybeError =
         [ maybeError |> Maybe.withDefault "" |> text ]
 
 
-machineStateView : SECD -> Html Msg
+machineStateView : SECD.SECD -> Html Msg
 machineStateView ( stack, env, control, dump ) =
     div []
         [ div []
