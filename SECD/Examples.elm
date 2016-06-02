@@ -8,13 +8,35 @@ import SECD.Arithmetic.Curried
 helloWorld : Machine
 helloWorld =
     initSimpleMachine
-        <| ident "hello"
+        <| ident "HelloWorld"
 
 
 helloWorldIdentity : Machine
 helloWorldIdentity =
     initSimpleMachine
-        <| apply (fn "x" (ident "x")) (ident "hello world")
+        <| apply (fn "x" (ident "x")) (ident "HelloWorld")
+
+
+churchTrue : Expression
+churchTrue =
+    (fn "a" (fn "b" (ident "a")))
+
+
+churchFalse : Expression
+churchFalse =
+    (fn "a" (fn "b" (ident "b")))
+
+
+showChurchTrue : Machine
+showChurchTrue =
+    initSimpleMachine
+        <| apply2 churchTrue (ident "True") (ident "False")
+
+
+showChurchFalse : Machine
+showChurchFalse =
+    initSimpleMachine
+        <| apply2 churchFalse (ident "True") (ident "False")
 
 
 onePlusTwo : Machine
