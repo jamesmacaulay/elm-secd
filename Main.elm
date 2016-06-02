@@ -149,7 +149,10 @@ headerView =
         [ h1 [] [ text "elm-secd" ]
         , p [] [ a [ href "https://github.com/jamesmacaulay/elm-secd" ] [ text "source on github" ] ]
         , p []
-            [ text "This is an implementation of Peter Landin's SECD machine, as described his 1964 paper "
+            [ text "This is an implementation of Peter Landin's "
+            , a [ href "https://en.wikipedia.org/wiki/SECD_machine" ]
+                [ text "SECD machine" ]
+            , text ", as described his 1964 paper "
             , a [ href "https://www.cs.cmu.edu/afs/cs/user/crary/www/819-f09/Landin64.pdf" ]
                 [ text "The Mechanical Evaluation of Expressions" ]
             , text "."
