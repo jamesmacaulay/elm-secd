@@ -1,8 +1,9 @@
 module SECD.Examples exposing (..)
 
 import SECD exposing (..)
-import SECD.Expressions exposing (..)
-import SECD.Arithmetic.Curried
+import SECD.ExpressionHelpers exposing (..)
+import SECD.CurriedArithmetic
+import SECD.ChurchEncoding as CE
 
 
 helloWorld : Machine
@@ -30,24 +31,42 @@ churchFalse =
 showChurchTrue : Machine
 showChurchTrue =
     initSimpleMachine
-        <| apply2 churchTrue (ident "True") (ident "False")
+        <| CE.showBoolean CE.chTrue
 
 
 showChurchFalse : Machine
 showChurchFalse =
     initSimpleMachine
-        <| apply2 churchFalse (ident "True") (ident "False")
+        <| CE.showBoolean CE.chFalse
+
+
+zeroIsZero : Machine
+zeroIsZero =
+    initSimpleMachine
+        <| (CE.showBoolean (apply CE.isZero (CE.encodeInt 0)))
+
+
+oneMinusOneIsZero : Machine
+oneMinusOneIsZero =
+    initSimpleMachine
+        <| (CE.showBoolean (apply CE.isZero (apply2 CE.minus (CE.encodeInt 1) (CE.encodeInt 1))))
+
+
+twoMinusOneIsNotZero : Machine
+twoMinusOneIsNotZero =
+    initSimpleMachine
+        <| (CE.showBoolean (apply CE.isZero (apply2 CE.minus (CE.encodeInt 2) (CE.encodeInt 1))))
 
 
 onePlusTwo : Machine
 onePlusTwo =
-    initMachine SECD.Arithmetic.Curried.basicFunctions
+    initMachine SECD.CurriedArithmetic.basicFunctions
         <| apply2 (ident "+") (ident "1") (ident "2")
 
 
 plusAndMinus : Machine
 plusAndMinus =
-    initMachine SECD.Arithmetic.Curried.basicFunctions
+    initMachine SECD.CurriedArithmetic.basicFunctions
         <| apply2 (ident "+")
             (apply2 (ident "-")
                 (ident "11")
