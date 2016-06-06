@@ -36,14 +36,14 @@ type alias Model =
 exampleMachines : List ( String, SECD.Machine )
 exampleMachines =
     [ ( "HelloWorld", SECD.Examples.helloWorld )
-    , ( "(λx.x)(HelloWorld)", SECD.Examples.helloWorldIdentity )
-    , ( "(λa.λb.a)(True)(False)", SECD.Examples.showChurchTrue )
-    , ( "(λa.λb.b)(True)(False)", SECD.Examples.showChurchFalse )
-    , ( "Church encoding: 0 == 0", SECD.Examples.zeroIsZero )
-    , ( "Church encoding: (1 - 1) == 0", SECD.Examples.oneMinusOneIsZero )
-    , ( "Church encoding: (2 - 1) != 0", SECD.Examples.twoMinusOneIsNotZero )
-    , ( "1 + 2", SECD.Examples.onePlusTwo )
-    , ( "(11 - 2) + 5", SECD.Examples.plusAndMinus )
+    , ( "HelloWorld identity", SECD.Examples.helloWorldIdentity )
+    , ( "Church booleans: True", SECD.Examples.showChurchTrue )
+    , ( "Church booleans: False", SECD.Examples.showChurchFalse )
+    , ( "Church numerals: 0 == 0", SECD.Examples.zeroIsZero )
+    , ( "Church numerals: (1 - 1) == 0", SECD.Examples.oneMinusOneIsZero )
+    , ( "Church numerals: (2 - 1) != 0", SECD.Examples.twoMinusOneIsNotZero )
+    , ( "Integer arithmetic: 1 + 2", SECD.Examples.onePlusTwo )
+    , ( "Integer arithmetic: (11 - 2) + 5", SECD.Examples.plusAndMinus )
     ]
 
 
