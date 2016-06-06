@@ -220,7 +220,7 @@ machineStateView ( stack, env, control, dump ) =
             ]
         , div []
             [ h4 [] [ text "control" ]
-            , ul [] (List.map (toString >> text >> (\t -> li [] [ t ])) control)
+            , ul [] (List.map (SECD.instructionToString >> text >> (\t -> li [] [ t ])) control)
             ]
         , div []
             [ h4 [] [ text "dump" ]
