@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import SECD exposing (SECD)
 import SECD.Examples
+import SECD.Printer
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -220,7 +221,7 @@ machineStateView ( stack, env, control, dump ) =
             ]
         , div []
             [ h4 [] [ text "control" ]
-            , ul [] (List.map (SECD.instructionToString >> text >> (\t -> li [] [ t ])) control)
+            , ul [] (List.map (SECD.Printer.instructionToString >> text >> (\t -> li [] [ t ])) control)
             ]
         , div []
             [ h4 [] [ text "dump" ]
