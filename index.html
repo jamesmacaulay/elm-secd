@@ -7190,87 +7190,9 @@ var _elm_lang$html$Html_Events$Options = F2(
 	function (a, b) {
 		return {stopPropagation: a, preventDefault: b};
 	});
-var _jamesmacaulay$elm_secd$SECD$expressionToString = function (expression) {
-	var _p0 = expression;
-	switch (_p0.ctor) {
-		case 'Identifier':
-			return _p0._0;
-		case 'Lambda':
-			var bvString = function () {
-				var _p1 = _p0._0;
-				if (_p1.ctor === 'SingleVariable') {
-					return _p1._0;
-				} else {
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						'(',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							A2(_elm_lang$core$String$join, ',', _p1._0),
-							')'));
-				}
-			}();
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'λ',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					bvString,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'.',
-						_jamesmacaulay$elm_secd$SECD$expressionToString(_p0._1))));
-		default:
-			var _p5 = _p0._0;
-			var _p4 = _p0._1;
-			var operandString = function () {
-				var _p2 = _p4;
-				if (_p2.ctor === 'Identifier') {
-					return _jamesmacaulay$elm_secd$SECD$expressionToString(_p4);
-				} else {
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						'(',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_jamesmacaulay$elm_secd$SECD$expressionToString(_p4),
-							')'));
-				}
-			}();
-			var operatorString = function () {
-				var _p3 = _p5;
-				if (_p3.ctor === 'Lambda') {
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						'(',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_jamesmacaulay$elm_secd$SECD$expressionToString(_p5),
-							')'));
-				} else {
-					return _jamesmacaulay$elm_secd$SECD$expressionToString(_p5);
-				}
-			}();
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				operatorString,
-				A2(_elm_lang$core$Basics_ops['++'], ' ', operandString));
-	}
-};
-var _jamesmacaulay$elm_secd$SECD$instructionToString = function (instruction) {
-	var _p6 = instruction;
-	if (_p6.ctor === 'Ap') {
-		return 'apply';
-	} else {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'expression: ',
-			_jamesmacaulay$elm_secd$SECD$expressionToString(_p6._0));
-	}
-};
 var _jamesmacaulay$elm_secd$SECD$isDone = function (machine) {
-	var _p7 = machine.state;
-	if (((_p7.ctor === '_Tuple4') && (_p7._2.ctor === '[]')) && (_p7._3.ctor === 'NoDump')) {
+	var _p0 = machine.state;
+	if (((_p0.ctor === '_Tuple4') && (_p0._2.ctor === '[]')) && (_p0._3.ctor === 'NoDump')) {
 		return true;
 	} else {
 		return false;
@@ -7282,10 +7204,10 @@ var _jamesmacaulay$elm_secd$SECD$derive = F2(
 	});
 var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 	function (boundVars, value) {
-		var _p8 = boundVars;
-		if (_p8.ctor === 'VariableList') {
-			var _p9 = value;
-			if (_p9.ctor === 'ListValue') {
+		var _p1 = boundVars;
+		if (_p1.ctor === 'VariableList') {
+			var _p2 = value;
+			if (_p2.ctor === 'ListValue') {
 				return _elm_lang$core$Result$Ok(
 					_elm_lang$core$List$reverse(
 						A3(
@@ -7294,8 +7216,8 @@ var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 								function (v0, v1) {
 									return {ctor: '_Tuple2', _0: v0, _1: v1};
 								}),
-							_p8._0,
-							_p9._0)));
+							_p1._0,
+							_p2._0)));
 			} else {
 				return _elm_lang$core$Result$Err('could not decompose non-list value into variable list');
 			}
@@ -7303,7 +7225,7 @@ var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 			return _elm_lang$core$Result$Ok(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple2', _0: _p8._0, _1: value}
+						{ctor: '_Tuple2', _0: _p1._0, _1: value}
 					]));
 		}
 	});
@@ -7311,32 +7233,32 @@ var _jamesmacaulay$elm_secd$SECD$location = F2(
 	function (environment, name) {
 		location:
 		while (true) {
-			var _p10 = environment;
-			if (_p10.ctor === '[]') {
+			var _p3 = environment;
+			if (_p3.ctor === '[]') {
 				return _elm_lang$core$Maybe$Nothing;
 			} else {
-				if (_elm_lang$core$Native_Utils.eq(name, _p10._0._0)) {
-					return _elm_lang$core$Maybe$Just(_p10._0._1);
+				if (_elm_lang$core$Native_Utils.eq(name, _p3._0._0)) {
+					return _elm_lang$core$Maybe$Just(_p3._0._1);
 				} else {
-					var _v9 = _p10._1,
-						_v10 = name;
-					environment = _v9;
-					name = _v10;
+					var _v4 = _p3._1,
+						_v5 = name;
+					environment = _v4;
+					name = _v5;
 					continue location;
 				}
 			}
 		}
 	});
 var _jamesmacaulay$elm_secd$SECD$pushInstruction = F2(
-	function (instruction, _p11) {
-		var _p12 = _p11;
-		var _p13 = _p12.state;
-		var s = _p13._0;
-		var e = _p13._1;
-		var c = _p13._2;
-		var d = _p13._3;
+	function (instruction, _p4) {
+		var _p5 = _p4;
+		var _p6 = _p5.state;
+		var s = _p6._0;
+		var e = _p6._1;
+		var c = _p6._2;
+		var d = _p6._3;
 		return _elm_lang$core$Native_Utils.update(
-			_p12,
+			_p5,
 			{
 				state: {
 					ctor: '_Tuple4',
@@ -7417,31 +7339,31 @@ var _jamesmacaulay$elm_secd$SECD$initSimpleMachine = function (expression) {
 		_jamesmacaulay$elm_secd$SECD$emptyMachine(_elm_lang$core$Dict$empty));
 };
 var _jamesmacaulay$elm_secd$SECD$Ap = {ctor: 'Ap'};
-var _jamesmacaulay$elm_secd$SECD$transform = function (_p14) {
-	var _p15 = _p14;
-	var _p25 = _p15;
-	var _p16 = _p15.state;
-	_v13_8:
+var _jamesmacaulay$elm_secd$SECD$transform = function (_p7) {
+	var _p8 = _p7;
+	var _p18 = _p8;
+	var _p9 = _p8.state;
+	_v8_8:
 	do {
-		if (_p16.ctor === '_Tuple4') {
-			if (_p16._2.ctor === '[]') {
-				if (_p16._0.ctor === '::') {
-					if (_p16._3.ctor === 'Dump') {
-						if (_p16._3._0.ctor === '_Tuple4') {
+		if (_p9.ctor === '_Tuple4') {
+			if (_p9._2.ctor === '[]') {
+				if (_p9._0.ctor === '::') {
+					if (_p9._3.ctor === 'Dump') {
+						if (_p9._3._0.ctor === '_Tuple4') {
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p25,
+									_p18,
 									{
 										state: {
 											ctor: '_Tuple4',
-											_0: A2(_elm_lang$core$List_ops['::'], _p16._0._0, _p16._3._0._0),
-											_1: _p16._3._0._1,
-											_2: _p16._3._0._2,
-											_3: _p16._3._0._3
+											_0: A2(_elm_lang$core$List_ops['::'], _p9._0._0, _p9._3._0._0),
+											_1: _p9._3._0._1,
+											_2: _p9._3._0._2,
+											_3: _p9._3._0._3
 										}
 									}));
 						} else {
-							break _v13_8;
+							break _v8_8;
 						}
 					} else {
 						return _elm_lang$core$Result$Err('already finished!');
@@ -7450,21 +7372,21 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p14) {
 					return _elm_lang$core$Result$Err('invalid state: empty control with empty stack');
 				}
 			} else {
-				if (_p16._2._0.ctor === 'Ap') {
-					if ((_p16._0.ctor === '::') && (_p16._0._1.ctor === '::')) {
-						switch (_p16._0._0.ctor) {
+				if (_p9._2._0.ctor === 'Ap') {
+					if ((_p9._0.ctor === '::') && (_p9._0._1.ctor === '::')) {
+						switch (_p9._0._0.ctor) {
 							case 'Closure':
-								if (_p16._0._0._0.ctor === '_Tuple2') {
+								if (_p9._0._0._0.ctor === '_Tuple2') {
 									return A2(
 										_elm_lang$core$Result$andThen,
-										A2(_jamesmacaulay$elm_secd$SECD$assoc, _p16._0._0._0._1, _p16._0._1._0),
+										A2(_jamesmacaulay$elm_secd$SECD$assoc, _p9._0._0._0._1, _p9._0._1._0),
 										function (boundVarsEnv) {
 											var dump$ = _jamesmacaulay$elm_secd$SECD$Dump(
-												{ctor: '_Tuple4', _0: _p16._0._1._1, _1: _p16._1, _2: _p16._2._1, _3: _p16._3});
-											var newEnv = A2(_jamesmacaulay$elm_secd$SECD$derive, boundVarsEnv, _p16._0._0._0._0);
+												{ctor: '_Tuple4', _0: _p9._0._1._1, _1: _p9._1, _2: _p9._2._1, _3: _p9._3});
+											var newEnv = A2(_jamesmacaulay$elm_secd$SECD$derive, boundVarsEnv, _p9._0._0._0._0);
 											return _elm_lang$core$Result$Ok(
 												_elm_lang$core$Native_Utils.update(
-													_p25,
+													_p18,
 													{
 														state: {
 															ctor: '_Tuple4',
@@ -7473,101 +7395,101 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p14) {
 															_1: newEnv,
 															_2: _elm_lang$core$Native_List.fromArray(
 																[
-																	_jamesmacaulay$elm_secd$SECD$AE(_p16._0._0._1)
+																	_jamesmacaulay$elm_secd$SECD$AE(_p9._0._0._1)
 																]),
 															_3: dump$
 														}
 													}));
 										});
 								} else {
-									break _v13_8;
+									break _v8_8;
 								}
 							case 'BasicFunction':
 								return A2(
 									_elm_lang$core$Result$map,
 									function (value) {
 										return _elm_lang$core$Native_Utils.update(
-											_p25,
+											_p18,
 											{
 												state: {
 													ctor: '_Tuple4',
-													_0: A2(_elm_lang$core$List_ops['::'], value, _p16._0._1._1),
-													_1: _p16._1,
-													_2: _p16._2._1,
-													_3: _p16._3
+													_0: A2(_elm_lang$core$List_ops['::'], value, _p9._0._1._1),
+													_1: _p9._1,
+													_2: _p9._2._1,
+													_3: _p9._3
 												}
 											});
 									},
-									_p16._0._0._0(_p16._0._1._0));
+									_p9._0._0._0(_p9._0._1._0));
 							default:
-								break _v13_8;
+								break _v8_8;
 						}
 					} else {
-						break _v13_8;
+						break _v8_8;
 					}
 				} else {
-					switch (_p16._2._0._0.ctor) {
+					switch (_p9._2._0._0.ctor) {
 						case 'Identifier':
-							var _p23 = _p16._2._1;
-							var _p22 = _p16._0;
-							var _p21 = _p16._2._0._0._0;
-							var _p20 = _p16._1;
-							var _p19 = _p16._3;
-							var _p17 = A2(_jamesmacaulay$elm_secd$SECD$location, _p20, _p21);
-							if (_p17.ctor === 'Nothing') {
-								var _p18 = A2(_elm_lang$core$Dict$get, _p21, _p15.basicFunctions);
-								if (_p18.ctor === 'Nothing') {
+							var _p16 = _p9._2._1;
+							var _p15 = _p9._0;
+							var _p14 = _p9._2._0._0._0;
+							var _p13 = _p9._1;
+							var _p12 = _p9._3;
+							var _p10 = A2(_jamesmacaulay$elm_secd$SECD$location, _p13, _p14);
+							if (_p10.ctor === 'Nothing') {
+								var _p11 = A2(_elm_lang$core$Dict$get, _p14, _p8.basicFunctions);
+								if (_p11.ctor === 'Nothing') {
 									return _elm_lang$core$Result$Ok(
 										_elm_lang$core$Native_Utils.update(
-											_p25,
+											_p18,
 											{
 												state: {
 													ctor: '_Tuple4',
 													_0: A2(
 														_elm_lang$core$List_ops['::'],
-														_jamesmacaulay$elm_secd$SECD$Atom(_p21),
-														_p22),
-													_1: _p20,
-													_2: _p23,
-													_3: _p19
+														_jamesmacaulay$elm_secd$SECD$Atom(_p14),
+														_p15),
+													_1: _p13,
+													_2: _p16,
+													_3: _p12
 												}
 											}));
 								} else {
 									return _elm_lang$core$Result$Ok(
 										_elm_lang$core$Native_Utils.update(
-											_p25,
+											_p18,
 											{
 												state: {
 													ctor: '_Tuple4',
 													_0: A2(
 														_elm_lang$core$List_ops['::'],
-														_jamesmacaulay$elm_secd$SECD$BasicFunction(_p18._0),
-														_p22),
-													_1: _p20,
-													_2: _p23,
-													_3: _p19
+														_jamesmacaulay$elm_secd$SECD$BasicFunction(_p11._0),
+														_p15),
+													_1: _p13,
+													_2: _p16,
+													_3: _p12
 												}
 											}));
 								}
 							} else {
 								return _elm_lang$core$Result$Ok(
 									_elm_lang$core$Native_Utils.update(
-										_p25,
+										_p18,
 										{
 											state: {
 												ctor: '_Tuple4',
-												_0: A2(_elm_lang$core$List_ops['::'], _p17._0, _p22),
-												_1: _p20,
-												_2: _p23,
-												_3: _p19
+												_0: A2(_elm_lang$core$List_ops['::'], _p10._0, _p15),
+												_1: _p13,
+												_2: _p16,
+												_3: _p12
 											}
 										}));
 							}
 						case 'Lambda':
-							var _p24 = _p16._1;
+							var _p17 = _p9._1;
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p25,
+									_p18,
 									{
 										state: {
 											ctor: '_Tuple4',
@@ -7575,38 +7497,38 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p14) {
 												_elm_lang$core$List_ops['::'],
 												A2(
 													_jamesmacaulay$elm_secd$SECD$Closure,
-													{ctor: '_Tuple2', _0: _p24, _1: _p16._2._0._0._0},
-													_p16._2._0._0._1),
-												_p16._0),
-											_1: _p24,
-											_2: _p16._2._1,
-											_3: _p16._3
+													{ctor: '_Tuple2', _0: _p17, _1: _p9._2._0._0._0},
+													_p9._2._0._0._1),
+												_p9._0),
+											_1: _p17,
+											_2: _p9._2._1,
+											_3: _p9._3
 										}
 									}));
 						default:
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p25,
+									_p18,
 									{
 										state: {
 											ctor: '_Tuple4',
-											_0: _p16._0,
-											_1: _p16._1,
+											_0: _p9._0,
+											_1: _p9._1,
 											_2: A2(
 												_elm_lang$core$List_ops['::'],
-												_jamesmacaulay$elm_secd$SECD$AE(_p16._2._0._0._1),
+												_jamesmacaulay$elm_secd$SECD$AE(_p9._2._0._0._1),
 												A2(
 													_elm_lang$core$List_ops['::'],
-													_jamesmacaulay$elm_secd$SECD$AE(_p16._2._0._0._0),
-													A2(_elm_lang$core$List_ops['::'], _jamesmacaulay$elm_secd$SECD$Ap, _p16._2._1))),
-											_3: _p16._3
+													_jamesmacaulay$elm_secd$SECD$AE(_p9._2._0._0._0),
+													A2(_elm_lang$core$List_ops['::'], _jamesmacaulay$elm_secd$SECD$Ap, _p9._2._1))),
+											_3: _p9._3
 										}
 									}));
 					}
 				}
 			}
 		} else {
-			break _v13_8;
+			break _v8_8;
 		}
 	} while(false);
 	return _elm_lang$core$Result$Err('invalid state: ¯\\_(ツ)_/¯');
@@ -7982,8 +7904,101 @@ var _jamesmacaulay$elm_secd$SECD_Examples$helloWorldIdentity = _jamesmacaulay$el
 		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('HelloWorld')));
 var _jamesmacaulay$elm_secd$SECD_Examples$helloWorld = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
 	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('HelloWorld'));
+var _jamesmacaulay$elm_secd$SECD_Printer$expressionToString = function (expression) {
+	var _p0 = expression;
+	switch (_p0.ctor) {
+		case 'Identifier':
+			return _p0._0;
+		case 'Lambda':
+			var bvString = function () {
+				var _p1 = _p0._0;
+				if (_p1.ctor === 'SingleVariable') {
+					return _p1._0;
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(_elm_lang$core$String$join, ',', _p1._0),
+							')'));
+				}
+			}();
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'λ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					bvString,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'.',
+						_jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p0._1))));
+		default:
+			var _p5 = _p0._0;
+			var _p4 = _p0._1;
+			var operandString = function () {
+				var _p2 = _p4;
+				if (_p2.ctor === 'Identifier') {
+					return _jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p4);
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p4),
+							')'));
+				}
+			}();
+			var operatorString = function () {
+				var _p3 = _p5;
+				if (_p3.ctor === 'Lambda') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p5),
+							')'));
+				} else {
+					return _jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p5);
+				}
+			}();
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				operatorString,
+				A2(_elm_lang$core$Basics_ops['++'], ' ', operandString));
+	}
+};
+var _jamesmacaulay$elm_secd$SECD_Printer$instructionToString = function (instruction) {
+	var _p6 = instruction;
+	if (_p6.ctor === 'Ap') {
+		return 'apply';
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'expression: ',
+			_jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p6._0));
+	}
+};
 var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 	var _p1 = _p0;
+	var toText = function (_p2) {
+		return _elm_lang$html$Html$text(
+			_elm_lang$core$Basics$toString(_p2));
+	};
+	var toListItems = _elm_lang$core$List$map(
+		function (x) {
+			return A2(
+				_elm_lang$html$Html$li,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						toText(x)
+					]));
+		});
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8008,21 +8023,7 @@ var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 						_elm_lang$html$Html$ul,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
-						A2(
-							_elm_lang$core$List$map,
-							function (_p2) {
-								return function (t) {
-									return A2(
-										_elm_lang$html$Html$li,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[t]));
-								}(
-									_elm_lang$html$Html$text(
-										_elm_lang$core$Basics$toString(_p2)));
-							},
-							_p1._0))
+						toListItems(_p1._0))
 					])),
 				A2(
 				_elm_lang$html$Html$div,
@@ -8042,21 +8043,7 @@ var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 						_elm_lang$html$Html$ul,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
-						A2(
-							_elm_lang$core$List$map,
-							function (_p3) {
-								return function (t) {
-									return A2(
-										_elm_lang$html$Html$li,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[t]));
-								}(
-									_elm_lang$html$Html$text(
-										_elm_lang$core$Basics$toString(_p3)));
-							},
-							_p1._1))
+						toListItems(_p1._1))
 					])),
 				A2(
 				_elm_lang$html$Html$div,
@@ -8076,21 +8063,7 @@ var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 						_elm_lang$html$Html$ul,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
-						A2(
-							_elm_lang$core$List$map,
-							function (_p4) {
-								return function (t) {
-									return A2(
-										_elm_lang$html$Html$li,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[t]));
-								}(
-									_elm_lang$html$Html$text(
-										_jamesmacaulay$elm_secd$SECD$instructionToString(_p4)));
-							},
-							_p1._2))
+						toListItems(_p1._2))
 					])),
 				A2(
 				_elm_lang$html$Html$div,
@@ -8112,8 +8085,7 @@ var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(_p1._3))
+								toText(_p1._3)
 							]))
 					]))
 			]));
@@ -8149,6 +8121,49 @@ var _jamesmacaulay$elm_secd$Main$doneView = function (machine) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_jamesmacaulay$elm_secd$SECD$isDone(machine) ? _elm_lang$html$Html$text('done!') : _elm_lang$html$Html$text('')
+			]));
+};
+var _jamesmacaulay$elm_secd$Main$machineInfoView = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				function () {
+					var _p3 = model.initMachine.state;
+					if (((_p3.ctor === '_Tuple4') && (_p3._2.ctor === '::')) && (_p3._2._0.ctor === 'AE')) {
+						return _elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'Initial expression: ',
+									_jamesmacaulay$elm_secd$SECD_Printer$expressionToString(_p3._2._0._0)))
+							]);
+					} else {
+						return _elm_lang$core$Native_List.fromArray(
+							[]);
+					}
+				}()),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Dict$isEmpty(model.initMachine.basicFunctions) ? _elm_lang$core$Native_List.fromArray(
+					[]) : _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'Built-in basic functions available: ',
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Dict$keys(model.initMachine.basicFunctions))))
+					]))
 			]));
 };
 var _jamesmacaulay$elm_secd$Main$headerView = A2(
@@ -8228,16 +8243,18 @@ var _jamesmacaulay$elm_secd$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _jamesmacaulay$elm_secd$Main$defaultNamedMachine = {ctor: '_Tuple2', _0: 'HelloWorld', _1: _jamesmacaulay$elm_secd$SECD_Examples$helloWorld};
-var _jamesmacaulay$elm_secd$Main$init = function (_p5) {
-	var _p6 = _p5;
+var _jamesmacaulay$elm_secd$Main$init = function (_p4) {
+	var _p5 = _p4;
+	var _p6 = _p5._1;
 	return {
 		ctor: '_Tuple2',
 		_0: {
-			machine: _p6._1,
+			machine: _p6,
+			initMachine: _p6,
 			history: _elm_lang$core$Native_List.fromArray(
 				[]),
 			error: _elm_lang$core$Maybe$Nothing,
-			selectedMachineName: _p6._0
+			selectedMachineName: _p5._0
 		},
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
@@ -8317,9 +8334,9 @@ var _jamesmacaulay$elm_secd$Main$update = F2(
 				}
 		}
 	});
-var _jamesmacaulay$elm_secd$Main$Model = F4(
-	function (a, b, c, d) {
-		return {machine: a, history: b, error: c, selectedMachineName: d};
+var _jamesmacaulay$elm_secd$Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {machine: a, initMachine: b, history: c, error: d, selectedMachineName: e};
 	});
 var _jamesmacaulay$elm_secd$Main$ResetMachine = function (a) {
 	return {ctor: 'ResetMachine', _0: a};
@@ -8427,6 +8444,7 @@ var _jamesmacaulay$elm_secd$Main$view = function (model) {
 			[
 				_jamesmacaulay$elm_secd$Main$headerView,
 				_jamesmacaulay$elm_secd$Main$machineSelectorView(model),
+				_jamesmacaulay$elm_secd$Main$machineInfoView(model),
 				_jamesmacaulay$elm_secd$Main$controlsView(model),
 				_jamesmacaulay$elm_secd$Main$machineStateView(model.machine.state)
 			]));
