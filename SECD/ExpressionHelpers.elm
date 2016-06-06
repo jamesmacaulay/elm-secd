@@ -1,4 +1,4 @@
-module SECD.Expressions exposing (..)
+module SECD.ExpressionHelpers exposing (..)
 
 import SECD exposing (..)
 
@@ -18,6 +18,16 @@ apply =
     Combination
 
 
+applyArg : Expression -> Expression -> Expression
+applyArg =
+    flip apply
+
+
 apply2 : Expression -> Expression -> Expression -> Expression
 apply2 operator operand1 operand2 =
     apply (apply operator operand1) operand2
+
+
+apply3 : Expression -> Expression -> Expression -> Expression -> Expression
+apply3 operator operand1 operand2 operand3 =
+    apply (apply (apply operator operand1) operand2) operand3

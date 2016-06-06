@@ -37,6 +37,9 @@ exampleMachines =
     , ( "(λx.x)(HelloWorld)", SECD.Examples.helloWorldIdentity )
     , ( "(λa.λb.a)(True)(False)", SECD.Examples.showChurchTrue )
     , ( "(λa.λb.b)(True)(False)", SECD.Examples.showChurchFalse )
+    , ( "Church encoding: 0 == 0", SECD.Examples.zeroIsZero )
+    , ( "Church encoding: (1 - 1) == 0", SECD.Examples.oneMinusOneIsZero )
+    , ( "Church encoding: (2 - 1) != 0", SECD.Examples.twoMinusOneIsNotZero )
     , ( "1 + 2", SECD.Examples.onePlusTwo )
     , ( "(11 - 2) + 5", SECD.Examples.plusAndMinus )
     ]
@@ -217,7 +220,7 @@ machineStateView ( stack, env, control, dump ) =
             ]
         , div []
             [ h4 [] [ text "control" ]
-            , ul [] (List.map (toString >> text >> (\t -> li [] [ t ])) control)
+            , ul [] (List.map (SECD.instructionToString >> text >> (\t -> li [] [ t ])) control)
             ]
         , div []
             [ h4 [] [ text "dump" ]

@@ -1,4 +1,4 @@
-module SECD.Arithmetic.Curried exposing (..)
+module SECD.CurriedArithmetic exposing (..)
 
 import SECD exposing (..)
 import String
