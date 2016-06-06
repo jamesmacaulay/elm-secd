@@ -9,6 +9,7 @@ import Html.Events exposing (..)
 import Html.App
 import Json.Decode as Json
 import Dict exposing (Dict)
+import Time
 
 
 main =
@@ -30,6 +31,7 @@ type alias Model =
     , history : List SECD.Machine
     , error : Maybe String
     , selectedMachineName : String
+    , isPlaying : Bool
     }
 
 
@@ -39,9 +41,9 @@ exampleMachines =
     , ( "HelloWorld identity", SECD.Examples.helloWorldIdentity )
     , ( "Church booleans: True", SECD.Examples.showChurchTrue )
     , ( "Church booleans: False", SECD.Examples.showChurchFalse )
-    , ( "Church numerals: 0 == 0", SECD.Examples.zeroIsZero )
-    , ( "Church numerals: (1 - 1) == 0", SECD.Examples.oneMinusOneIsZero )
-    , ( "Church numerals: (2 - 1) != 0", SECD.Examples.twoMinusOneIsNotZero )
+    , ( "Church numerals: (0 == 0)?", SECD.Examples.zeroIsZero )
+    , ( "Church numerals: ((1 - 1) == 0)?", SECD.Examples.oneMinusOneIsZero )
+    , ( "Church numerals: ((2 - 1) == 0)?", SECD.Examples.twoMinusOneIsNotZero )
     , ( "Integer arithmetic: 1 + 2", SECD.Examples.onePlusTwo )
     , ( "Integer arithmetic: (11 - 2) + 5", SECD.Examples.plusAndMinus )
     ]
@@ -59,6 +61,7 @@ init ( machineName, machine ) =
       , history = []
       , error = Nothing
       , selectedMachineName = machineName
+      , isPlaying = False
       }
     , Cmd.none
     )
@@ -81,6 +84,7 @@ initDefault =
 type Msg
     = StepForward
     | StepBack
+    | PlayPause
     | ResetMachine String
 
 
@@ -90,13 +94,20 @@ update msg model =
         StepForward ->
             case SECD.transform model.machine of
                 Ok machine ->
-                    ( { model
-                        | machine = machine
-                        , history = model.machine :: model.history
-                        , error = Nothing
-                      }
-                    , Cmd.none
-                    )
+                    let
+                        model =
+                            if SECD.isDone machine && model.isPlaying then
+                                { model | isPlaying = False }
+                            else
+                                model
+                    in
+                        ( { model
+                            | machine = machine
+                            , history = model.machine :: model.history
+                            , error = Nothing
+                          }
+                        , Cmd.none
+                        )
 
                 Err errorMessage ->
                     ( { model | error = Just errorMessage }
@@ -117,6 +128,9 @@ update msg model =
                     , Cmd.none
                     )
 
+        PlayPause ->
+            ( { model | isPlaying = not model.isPlaying }, Cmd.none )
+
         ResetMachine machineName ->
             case Dict.get machineName exampleMachinesDict of
                 Nothing ->
@@ -132,7 +146,10 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    if model.isPlaying then
+        Time.every (400 * Time.millisecond) (always StepForward)
+    else
+        Sub.none
 
 
 
@@ -208,6 +225,14 @@ controlsView : Model -> Html Msg
 controlsView model =
     div [ style [ ( "margin-top", "20px" ) ] ]
         [ button [ onClick StepBack, disabled (List.isEmpty model.history) ] [ text "StepBack" ]
+        , button [ onClick PlayPause ]
+            [ text
+                (if model.isPlaying then
+                    "Pause"
+                 else
+                    "Play"
+                )
+            ]
         , button [ onClick StepForward, disabled (SECD.isDone model.machine) ] [ text "StepForward" ]
         , span [] [ text " " ]
         , doneView model.machine
