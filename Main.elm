@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import SECD exposing (SECD)
 import SECD.Examples
+import SECD.Printer
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -25,6 +26,7 @@ main =
 
 type alias Model =
     { machine : SECD.Machine
+    , initMachine : SECD.Machine
     , history : List SECD.Machine
     , error : Maybe String
     , selectedMachineName : String
@@ -53,6 +55,7 @@ exampleMachinesDict =
 init : ( String, SECD.Machine ) -> ( Model, Cmd Msg )
 init ( machineName, machine ) =
     ( { machine = machine
+      , initMachine = machine
       , history = []
       , error = Nothing
       , selectedMachineName = machineName
@@ -141,6 +144,7 @@ view model =
     div [ style [ ( "padding", "20px" ) ] ]
         [ headerView
         , machineSelectorView model
+        , machineInfoView model
         , controlsView model
         , machineStateView model.machine.state
         ]
@@ -180,6 +184,26 @@ machineSelectorView model =
         ]
 
 
+machineInfoView : Model -> Html Msg
+machineInfoView model =
+    div []
+        [ div []
+            (case model.initMachine.state of
+                ( _, _, (SECD.AE expression) :: _, _ ) ->
+                    [ text ("Initial expression: " ++ SECD.Printer.expressionToString expression) ]
+
+                _ ->
+                    []
+            )
+        , div []
+            (if Dict.isEmpty model.initMachine.basicFunctions then
+                []
+             else
+                [ text ("Built-in basic functions available: " ++ toString (Dict.keys model.initMachine.basicFunctions)) ]
+            )
+        ]
+
+
 controlsView : Model -> Html Msg
 controlsView model =
     div [ style [ ( "margin-top", "20px" ) ] ]
@@ -209,21 +233,28 @@ errorView maybeError =
 
 machineStateView : SECD.SECD -> Html Msg
 machineStateView ( stack, env, control, dump ) =
-    div []
-        [ div []
-            [ h4 [] [ text "stack" ]
-            , ul [] (List.map (toString >> text >> (\t -> li [] [ t ])) stack)
+    let
+        toText =
+            toString >> text
+
+        toListItems =
+            List.map (\x -> li [] [ toText x ])
+    in
+        div []
+            [ div []
+                [ h4 [] [ text "stack" ]
+                , ul [] (toListItems stack)
+                ]
+            , div []
+                [ h4 [] [ text "environment" ]
+                , ul [] (toListItems env)
+                ]
+            , div []
+                [ h4 [] [ text "control" ]
+                , ul [] (toListItems control)
+                ]
+            , div []
+                [ h4 [] [ text "dump" ]
+                , div [] [ toText dump ]
+                ]
             ]
-        , div []
-            [ h4 [] [ text "environment" ]
-            , ul [] (List.map (toString >> text >> (\t -> li [] [ t ])) env)
-            ]
-        , div []
-            [ h4 [] [ text "control" ]
-            , ul [] (List.map (SECD.instructionToString >> text >> (\t -> li [] [ t ])) control)
-            ]
-        , div []
-            [ h4 [] [ text "dump" ]
-            , div [] [ dump |> toString |> text ]
-            ]
-        ]
