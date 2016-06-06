@@ -4,4 +4,4 @@ This is an [Elm](http://elm-lang.org/) implementation of Peter Landin's [SECD ma
 
 You can play around with it at http://jamesmacaulay.github.io/elm-secd.
 
-I took a lot of inspiration from [this Haskell implementation](http://shift-reset.com/blog/2013/2/18/A%20Toy%20SECD%20Machine/) by Ian Price, which I found to be a big help in understanding Landin's paper.
+The machine itself is implemented in [SECD.elm](https://github.com/jamesmacaulay/elm-secd/blob/master/SECD.elm). I took a lot of inspiration from [this Haskell implementation](http://shift-reset.com/blog/2013/2/18/A%20Toy%20SECD%20Machine/) by Ian Price, which I found to be a big help in understanding Landin's paper.
