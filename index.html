@@ -7190,9 +7190,87 @@ var _elm_lang$html$Html_Events$Options = F2(
 	function (a, b) {
 		return {stopPropagation: a, preventDefault: b};
 	});
+var _jamesmacaulay$elm_secd$SECD$expressionToString = function (expression) {
+	var _p0 = expression;
+	switch (_p0.ctor) {
+		case 'Identifier':
+			return _p0._0;
+		case 'Lambda':
+			var bvString = function () {
+				var _p1 = _p0._0;
+				if (_p1.ctor === 'SingleVariable') {
+					return _p1._0;
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(_elm_lang$core$String$join, ',', _p1._0),
+							')'));
+				}
+			}();
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'λ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					bvString,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'.',
+						_jamesmacaulay$elm_secd$SECD$expressionToString(_p0._1))));
+		default:
+			var _p5 = _p0._0;
+			var _p4 = _p0._1;
+			var operandString = function () {
+				var _p2 = _p4;
+				if (_p2.ctor === 'Identifier') {
+					return _jamesmacaulay$elm_secd$SECD$expressionToString(_p4);
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_jamesmacaulay$elm_secd$SECD$expressionToString(_p4),
+							')'));
+				}
+			}();
+			var operatorString = function () {
+				var _p3 = _p5;
+				if (_p3.ctor === 'Lambda') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_jamesmacaulay$elm_secd$SECD$expressionToString(_p5),
+							')'));
+				} else {
+					return _jamesmacaulay$elm_secd$SECD$expressionToString(_p5);
+				}
+			}();
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				operatorString,
+				A2(_elm_lang$core$Basics_ops['++'], ' ', operandString));
+	}
+};
+var _jamesmacaulay$elm_secd$SECD$instructionToString = function (instruction) {
+	var _p6 = instruction;
+	if (_p6.ctor === 'Ap') {
+		return 'apply';
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'expression: ',
+			_jamesmacaulay$elm_secd$SECD$expressionToString(_p6._0));
+	}
+};
 var _jamesmacaulay$elm_secd$SECD$isDone = function (machine) {
-	var _p0 = machine.state;
-	if (((_p0.ctor === '_Tuple4') && (_p0._2.ctor === '[]')) && (_p0._3.ctor === 'NoDump')) {
+	var _p7 = machine.state;
+	if (((_p7.ctor === '_Tuple4') && (_p7._2.ctor === '[]')) && (_p7._3.ctor === 'NoDump')) {
 		return true;
 	} else {
 		return false;
@@ -7204,10 +7282,10 @@ var _jamesmacaulay$elm_secd$SECD$derive = F2(
 	});
 var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 	function (boundVars, value) {
-		var _p1 = boundVars;
-		if (_p1.ctor === 'VariableList') {
-			var _p2 = value;
-			if (_p2.ctor === 'ListValue') {
+		var _p8 = boundVars;
+		if (_p8.ctor === 'VariableList') {
+			var _p9 = value;
+			if (_p9.ctor === 'ListValue') {
 				return _elm_lang$core$Result$Ok(
 					_elm_lang$core$List$reverse(
 						A3(
@@ -7216,8 +7294,8 @@ var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 								function (v0, v1) {
 									return {ctor: '_Tuple2', _0: v0, _1: v1};
 								}),
-							_p1._0,
-							_p2._0)));
+							_p8._0,
+							_p9._0)));
 			} else {
 				return _elm_lang$core$Result$Err('could not decompose non-list value into variable list');
 			}
@@ -7225,7 +7303,7 @@ var _jamesmacaulay$elm_secd$SECD$assoc = F2(
 			return _elm_lang$core$Result$Ok(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple2', _0: _p1._0, _1: value}
+						{ctor: '_Tuple2', _0: _p8._0, _1: value}
 					]));
 		}
 	});
@@ -7233,32 +7311,32 @@ var _jamesmacaulay$elm_secd$SECD$location = F2(
 	function (environment, name) {
 		location:
 		while (true) {
-			var _p3 = environment;
-			if (_p3.ctor === '[]') {
+			var _p10 = environment;
+			if (_p10.ctor === '[]') {
 				return _elm_lang$core$Maybe$Nothing;
 			} else {
-				if (_elm_lang$core$Native_Utils.eq(name, _p3._0._0)) {
-					return _elm_lang$core$Maybe$Just(_p3._0._1);
+				if (_elm_lang$core$Native_Utils.eq(name, _p10._0._0)) {
+					return _elm_lang$core$Maybe$Just(_p10._0._1);
 				} else {
-					var _v4 = _p3._1,
-						_v5 = name;
-					environment = _v4;
-					name = _v5;
+					var _v9 = _p10._1,
+						_v10 = name;
+					environment = _v9;
+					name = _v10;
 					continue location;
 				}
 			}
 		}
 	});
 var _jamesmacaulay$elm_secd$SECD$pushInstruction = F2(
-	function (instruction, _p4) {
-		var _p5 = _p4;
-		var _p6 = _p5.state;
-		var s = _p6._0;
-		var e = _p6._1;
-		var c = _p6._2;
-		var d = _p6._3;
+	function (instruction, _p11) {
+		var _p12 = _p11;
+		var _p13 = _p12.state;
+		var s = _p13._0;
+		var e = _p13._1;
+		var c = _p13._2;
+		var d = _p13._3;
 		return _elm_lang$core$Native_Utils.update(
-			_p5,
+			_p12,
 			{
 				state: {
 					ctor: '_Tuple4',
@@ -7339,31 +7417,31 @@ var _jamesmacaulay$elm_secd$SECD$initSimpleMachine = function (expression) {
 		_jamesmacaulay$elm_secd$SECD$emptyMachine(_elm_lang$core$Dict$empty));
 };
 var _jamesmacaulay$elm_secd$SECD$Ap = {ctor: 'Ap'};
-var _jamesmacaulay$elm_secd$SECD$transform = function (_p7) {
-	var _p8 = _p7;
-	var _p18 = _p8;
-	var _p9 = _p8.state;
-	_v8_8:
+var _jamesmacaulay$elm_secd$SECD$transform = function (_p14) {
+	var _p15 = _p14;
+	var _p25 = _p15;
+	var _p16 = _p15.state;
+	_v13_8:
 	do {
-		if (_p9.ctor === '_Tuple4') {
-			if (_p9._2.ctor === '[]') {
-				if (_p9._0.ctor === '::') {
-					if (_p9._3.ctor === 'Dump') {
-						if (_p9._3._0.ctor === '_Tuple4') {
+		if (_p16.ctor === '_Tuple4') {
+			if (_p16._2.ctor === '[]') {
+				if (_p16._0.ctor === '::') {
+					if (_p16._3.ctor === 'Dump') {
+						if (_p16._3._0.ctor === '_Tuple4') {
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p18,
+									_p25,
 									{
 										state: {
 											ctor: '_Tuple4',
-											_0: A2(_elm_lang$core$List_ops['::'], _p9._0._0, _p9._3._0._0),
-											_1: _p9._3._0._1,
-											_2: _p9._3._0._2,
-											_3: _p9._3._0._3
+											_0: A2(_elm_lang$core$List_ops['::'], _p16._0._0, _p16._3._0._0),
+											_1: _p16._3._0._1,
+											_2: _p16._3._0._2,
+											_3: _p16._3._0._3
 										}
 									}));
 						} else {
-							break _v8_8;
+							break _v13_8;
 						}
 					} else {
 						return _elm_lang$core$Result$Err('already finished!');
@@ -7372,21 +7450,21 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p7) {
 					return _elm_lang$core$Result$Err('invalid state: empty control with empty stack');
 				}
 			} else {
-				if (_p9._2._0.ctor === 'Ap') {
-					if ((_p9._0.ctor === '::') && (_p9._0._1.ctor === '::')) {
-						switch (_p9._0._0.ctor) {
+				if (_p16._2._0.ctor === 'Ap') {
+					if ((_p16._0.ctor === '::') && (_p16._0._1.ctor === '::')) {
+						switch (_p16._0._0.ctor) {
 							case 'Closure':
-								if (_p9._0._0._0.ctor === '_Tuple2') {
+								if (_p16._0._0._0.ctor === '_Tuple2') {
 									return A2(
 										_elm_lang$core$Result$andThen,
-										A2(_jamesmacaulay$elm_secd$SECD$assoc, _p9._0._0._0._1, _p9._0._1._0),
+										A2(_jamesmacaulay$elm_secd$SECD$assoc, _p16._0._0._0._1, _p16._0._1._0),
 										function (boundVarsEnv) {
 											var dump$ = _jamesmacaulay$elm_secd$SECD$Dump(
-												{ctor: '_Tuple4', _0: _p9._0._1._1, _1: _p9._1, _2: _p9._2._1, _3: _p9._3});
-											var newEnv = A2(_jamesmacaulay$elm_secd$SECD$derive, boundVarsEnv, _p9._0._0._0._0);
+												{ctor: '_Tuple4', _0: _p16._0._1._1, _1: _p16._1, _2: _p16._2._1, _3: _p16._3});
+											var newEnv = A2(_jamesmacaulay$elm_secd$SECD$derive, boundVarsEnv, _p16._0._0._0._0);
 											return _elm_lang$core$Result$Ok(
 												_elm_lang$core$Native_Utils.update(
-													_p18,
+													_p25,
 													{
 														state: {
 															ctor: '_Tuple4',
@@ -7395,101 +7473,101 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p7) {
 															_1: newEnv,
 															_2: _elm_lang$core$Native_List.fromArray(
 																[
-																	_jamesmacaulay$elm_secd$SECD$AE(_p9._0._0._1)
+																	_jamesmacaulay$elm_secd$SECD$AE(_p16._0._0._1)
 																]),
 															_3: dump$
 														}
 													}));
 										});
 								} else {
-									break _v8_8;
+									break _v13_8;
 								}
 							case 'BasicFunction':
 								return A2(
 									_elm_lang$core$Result$map,
 									function (value) {
 										return _elm_lang$core$Native_Utils.update(
-											_p18,
+											_p25,
 											{
 												state: {
 													ctor: '_Tuple4',
-													_0: A2(_elm_lang$core$List_ops['::'], value, _p9._0._1._1),
-													_1: _p9._1,
-													_2: _p9._2._1,
-													_3: _p9._3
+													_0: A2(_elm_lang$core$List_ops['::'], value, _p16._0._1._1),
+													_1: _p16._1,
+													_2: _p16._2._1,
+													_3: _p16._3
 												}
 											});
 									},
-									_p9._0._0._0(_p9._0._1._0));
+									_p16._0._0._0(_p16._0._1._0));
 							default:
-								break _v8_8;
+								break _v13_8;
 						}
 					} else {
-						break _v8_8;
+						break _v13_8;
 					}
 				} else {
-					switch (_p9._2._0._0.ctor) {
+					switch (_p16._2._0._0.ctor) {
 						case 'Identifier':
-							var _p16 = _p9._2._1;
-							var _p15 = _p9._0;
-							var _p14 = _p9._2._0._0._0;
-							var _p13 = _p9._1;
-							var _p12 = _p9._3;
-							var _p10 = A2(_jamesmacaulay$elm_secd$SECD$location, _p13, _p14);
-							if (_p10.ctor === 'Nothing') {
-								var _p11 = A2(_elm_lang$core$Dict$get, _p14, _p8.basicFunctions);
-								if (_p11.ctor === 'Nothing') {
+							var _p23 = _p16._2._1;
+							var _p22 = _p16._0;
+							var _p21 = _p16._2._0._0._0;
+							var _p20 = _p16._1;
+							var _p19 = _p16._3;
+							var _p17 = A2(_jamesmacaulay$elm_secd$SECD$location, _p20, _p21);
+							if (_p17.ctor === 'Nothing') {
+								var _p18 = A2(_elm_lang$core$Dict$get, _p21, _p15.basicFunctions);
+								if (_p18.ctor === 'Nothing') {
 									return _elm_lang$core$Result$Ok(
 										_elm_lang$core$Native_Utils.update(
-											_p18,
+											_p25,
 											{
 												state: {
 													ctor: '_Tuple4',
 													_0: A2(
 														_elm_lang$core$List_ops['::'],
-														_jamesmacaulay$elm_secd$SECD$Atom(_p14),
-														_p15),
-													_1: _p13,
-													_2: _p16,
-													_3: _p12
+														_jamesmacaulay$elm_secd$SECD$Atom(_p21),
+														_p22),
+													_1: _p20,
+													_2: _p23,
+													_3: _p19
 												}
 											}));
 								} else {
 									return _elm_lang$core$Result$Ok(
 										_elm_lang$core$Native_Utils.update(
-											_p18,
+											_p25,
 											{
 												state: {
 													ctor: '_Tuple4',
 													_0: A2(
 														_elm_lang$core$List_ops['::'],
-														_jamesmacaulay$elm_secd$SECD$BasicFunction(_p11._0),
-														_p15),
-													_1: _p13,
-													_2: _p16,
-													_3: _p12
+														_jamesmacaulay$elm_secd$SECD$BasicFunction(_p18._0),
+														_p22),
+													_1: _p20,
+													_2: _p23,
+													_3: _p19
 												}
 											}));
 								}
 							} else {
 								return _elm_lang$core$Result$Ok(
 									_elm_lang$core$Native_Utils.update(
-										_p18,
+										_p25,
 										{
 											state: {
 												ctor: '_Tuple4',
-												_0: A2(_elm_lang$core$List_ops['::'], _p10._0, _p15),
-												_1: _p13,
-												_2: _p16,
-												_3: _p12
+												_0: A2(_elm_lang$core$List_ops['::'], _p17._0, _p22),
+												_1: _p20,
+												_2: _p23,
+												_3: _p19
 											}
 										}));
 							}
 						case 'Lambda':
-							var _p17 = _p9._1;
+							var _p24 = _p16._1;
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p18,
+									_p25,
 									{
 										state: {
 											ctor: '_Tuple4',
@@ -7497,59 +7575,70 @@ var _jamesmacaulay$elm_secd$SECD$transform = function (_p7) {
 												_elm_lang$core$List_ops['::'],
 												A2(
 													_jamesmacaulay$elm_secd$SECD$Closure,
-													{ctor: '_Tuple2', _0: _p17, _1: _p9._2._0._0._0},
-													_p9._2._0._0._1),
-												_p9._0),
-											_1: _p17,
-											_2: _p9._2._1,
-											_3: _p9._3
+													{ctor: '_Tuple2', _0: _p24, _1: _p16._2._0._0._0},
+													_p16._2._0._0._1),
+												_p16._0),
+											_1: _p24,
+											_2: _p16._2._1,
+											_3: _p16._3
 										}
 									}));
 						default:
 							return _elm_lang$core$Result$Ok(
 								_elm_lang$core$Native_Utils.update(
-									_p18,
+									_p25,
 									{
 										state: {
 											ctor: '_Tuple4',
-											_0: _p9._0,
-											_1: _p9._1,
+											_0: _p16._0,
+											_1: _p16._1,
 											_2: A2(
 												_elm_lang$core$List_ops['::'],
-												_jamesmacaulay$elm_secd$SECD$AE(_p9._2._0._0._1),
+												_jamesmacaulay$elm_secd$SECD$AE(_p16._2._0._0._1),
 												A2(
 													_elm_lang$core$List_ops['::'],
-													_jamesmacaulay$elm_secd$SECD$AE(_p9._2._0._0._0),
-													A2(_elm_lang$core$List_ops['::'], _jamesmacaulay$elm_secd$SECD$Ap, _p9._2._1))),
-											_3: _p9._3
+													_jamesmacaulay$elm_secd$SECD$AE(_p16._2._0._0._0),
+													A2(_elm_lang$core$List_ops['::'], _jamesmacaulay$elm_secd$SECD$Ap, _p16._2._1))),
+											_3: _p16._3
 										}
 									}));
 					}
 				}
 			}
 		} else {
-			break _v8_8;
+			break _v13_8;
 		}
 	} while(false);
 	return _elm_lang$core$Result$Err('invalid state: ¯\\_(ツ)_/¯');
 };
-var _jamesmacaulay$elm_secd$SECD_Expressions$apply = _jamesmacaulay$elm_secd$SECD$Combination;
-var _jamesmacaulay$elm_secd$SECD_Expressions$apply2 = F3(
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply = _jamesmacaulay$elm_secd$SECD$Combination;
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$applyArg = _elm_lang$core$Basics$flip(_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply);
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2 = F3(
 	function (operator, operand1, operand2) {
 		return A2(
-			_jamesmacaulay$elm_secd$SECD_Expressions$apply,
-			A2(_jamesmacaulay$elm_secd$SECD_Expressions$apply, operator, operand1),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			A2(_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply, operator, operand1),
 			operand2);
 	});
-var _jamesmacaulay$elm_secd$SECD_Expressions$ident = _jamesmacaulay$elm_secd$SECD$Identifier;
-var _jamesmacaulay$elm_secd$SECD_Expressions$fn = F2(
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply3 = F4(
+	function (operator, operand1, operand2, operand3) {
+		return A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+				A2(_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply, operator, operand1),
+				operand2),
+			operand3);
+	});
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident = _jamesmacaulay$elm_secd$SECD$Identifier;
+var _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn = F2(
 	function ($var, body) {
 		return A2(
 			_jamesmacaulay$elm_secd$SECD$Lambda,
 			_jamesmacaulay$elm_secd$SECD$SingleVariable($var),
 			body);
 	});
-var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$valueToInt = function (val) {
+var _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$valueToInt = function (val) {
 	var _p0 = val;
 	switch (_p0.ctor) {
 		case 'Atom':
@@ -7562,7 +7651,7 @@ var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$valueToInt = function (val) 
 			return _elm_lang$core$Result$Err('could not convert list to integer');
 	}
 };
-var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicBinaryIntegerArithmetic = function (f) {
+var _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicBinaryIntegerArithmetic = function (f) {
 	var partialF = function (x) {
 		return function (_p1) {
 			return A2(
@@ -7572,7 +7661,7 @@ var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicBinaryIntegerArithmetic
 						_elm_lang$core$Basics$toString(
 							A2(f, x, _p2)));
 				},
-				_jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$valueToInt(_p1));
+				_jamesmacaulay$elm_secd$SECD_CurriedArithmetic$valueToInt(_p1));
 		};
 	};
 	return function (_p3) {
@@ -7582,81 +7671,317 @@ var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicBinaryIntegerArithmetic
 				return _jamesmacaulay$elm_secd$SECD$BasicFunction(
 					partialF(_p4));
 			},
-			_jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$valueToInt(_p3));
+			_jamesmacaulay$elm_secd$SECD_CurriedArithmetic$valueToInt(_p3));
 	};
 };
-var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$plus = _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicBinaryIntegerArithmetic(
+var _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$plus = _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicBinaryIntegerArithmetic(
 	F2(
 		function (x, y) {
 			return x + y;
 		}));
-var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$minus = _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicBinaryIntegerArithmetic(
+var _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$minus = _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicBinaryIntegerArithmetic(
 	F2(
 		function (x, y) {
 			return x - y;
 		}));
-var _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicFunctions = _elm_lang$core$Dict$fromList(
+var _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicFunctions = _elm_lang$core$Dict$fromList(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			{ctor: '_Tuple2', _0: '+', _1: _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$plus},
-			{ctor: '_Tuple2', _0: '-', _1: _jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$minus}
+			{ctor: '_Tuple2', _0: '+', _1: _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$plus},
+			{ctor: '_Tuple2', _0: '-', _1: _jamesmacaulay$elm_secd$SECD_CurriedArithmetic$minus}
 		]));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean = function (expression) {
+	return A3(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+		expression,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('True'),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('False'));
+};
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$pred = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'n',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'f',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'x',
+			A4(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply3,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+				A2(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+					'g',
+					A2(
+						_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+						'h',
+						A2(
+							_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+							_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('h'),
+							A2(
+								_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+								_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('g'),
+								_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'))))),
+				A2(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+					'u',
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('x')),
+				A2(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+					'u',
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('u'))))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$minus = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'm',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'n',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$pred),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('m'))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$exp = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'm',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'n',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('m'))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$multiply = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'm',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'n',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'f',
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('m'),
+				A2(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'))))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$plus = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'm',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'n',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'f',
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+				'x',
+				A3(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('m'),
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'),
+					A3(
+						_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+						_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+						_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'),
+						_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('x')))))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$succ = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'n',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'f',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'x',
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'),
+				A3(
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'),
+					_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('x'))))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt = function (n) {
+	var body = function (n$) {
+		return (_elm_lang$core$Native_Utils.cmp(n$, 0) < 1) ? _jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('x') : A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('f'),
+			body(n$ - 1));
+	};
+	return A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'f',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'x',
+			body(n)));
+};
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chIf = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'p',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'a',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'b',
+			A3(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'),
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('a'),
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b')))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chNot = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'p',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'a',
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+			'b',
+			A3(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'),
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b'),
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('a')))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chXor = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'a',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'b',
+		A3(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('a'),
+			A2(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$chNot,
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b')),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b'))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chOr = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'p',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'q',
+		A3(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('q'))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chAnd = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'p',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'q',
+		A3(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('q'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('p'))));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chFalse = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'a',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'b',
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b')));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chTrue = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'a',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'b',
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('a')));
+var _jamesmacaulay$elm_secd$SECD_ChurchEncoding$isZero = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'n',
+	A3(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('n'),
+		A2(_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn, 'x', _jamesmacaulay$elm_secd$SECD_ChurchEncoding$chFalse),
+		_jamesmacaulay$elm_secd$SECD_ChurchEncoding$chTrue));
 var _jamesmacaulay$elm_secd$SECD_Examples$plusAndMinus = A2(
 	_jamesmacaulay$elm_secd$SECD$initMachine,
-	_jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicFunctions,
+	_jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicFunctions,
 	A3(
-		_jamesmacaulay$elm_secd$SECD_Expressions$apply2,
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('+'),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('+'),
 		A3(
-			_jamesmacaulay$elm_secd$SECD_Expressions$apply2,
-			_jamesmacaulay$elm_secd$SECD_Expressions$ident('-'),
-			_jamesmacaulay$elm_secd$SECD_Expressions$ident('11'),
-			_jamesmacaulay$elm_secd$SECD_Expressions$ident('2')),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('5')));
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('-'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('11'),
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('2')),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('5')));
 var _jamesmacaulay$elm_secd$SECD_Examples$onePlusTwo = A2(
 	_jamesmacaulay$elm_secd$SECD$initMachine,
-	_jamesmacaulay$elm_secd$SECD_Arithmetic_Curried$basicFunctions,
+	_jamesmacaulay$elm_secd$SECD_CurriedArithmetic$basicFunctions,
 	A3(
-		_jamesmacaulay$elm_secd$SECD_Expressions$apply2,
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('+'),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('1'),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('2')));
-var _jamesmacaulay$elm_secd$SECD_Examples$churchFalse = A2(
-	_jamesmacaulay$elm_secd$SECD_Expressions$fn,
-	'a',
-	A2(
-		_jamesmacaulay$elm_secd$SECD_Expressions$fn,
-		'b',
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('b')));
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('+'),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('1'),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('2')));
+var _jamesmacaulay$elm_secd$SECD_Examples$twoMinusOneIsNotZero = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
+	_jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean(
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			_jamesmacaulay$elm_secd$SECD_ChurchEncoding$isZero,
+			A3(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$minus,
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt(2),
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt(1)))));
+var _jamesmacaulay$elm_secd$SECD_Examples$oneMinusOneIsZero = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
+	_jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean(
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			_jamesmacaulay$elm_secd$SECD_ChurchEncoding$isZero,
+			A3(
+				_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply2,
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$minus,
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt(1),
+				_jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt(1)))));
+var _jamesmacaulay$elm_secd$SECD_Examples$zeroIsZero = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
+	_jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean(
+		A2(
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
+			_jamesmacaulay$elm_secd$SECD_ChurchEncoding$isZero,
+			_jamesmacaulay$elm_secd$SECD_ChurchEncoding$encodeInt(0))));
 var _jamesmacaulay$elm_secd$SECD_Examples$showChurchFalse = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
-	A3(
-		_jamesmacaulay$elm_secd$SECD_Expressions$apply2,
-		_jamesmacaulay$elm_secd$SECD_Examples$churchFalse,
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('True'),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('False')));
-var _jamesmacaulay$elm_secd$SECD_Examples$churchTrue = A2(
-	_jamesmacaulay$elm_secd$SECD_Expressions$fn,
+	_jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean(_jamesmacaulay$elm_secd$SECD_ChurchEncoding$chFalse));
+var _jamesmacaulay$elm_secd$SECD_Examples$showChurchTrue = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
+	_jamesmacaulay$elm_secd$SECD_ChurchEncoding$showBoolean(_jamesmacaulay$elm_secd$SECD_ChurchEncoding$chTrue));
+var _jamesmacaulay$elm_secd$SECD_Examples$churchFalse = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
 	'a',
 	A2(
-		_jamesmacaulay$elm_secd$SECD_Expressions$fn,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
 		'b',
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('a')));
-var _jamesmacaulay$elm_secd$SECD_Examples$showChurchTrue = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
-	A3(
-		_jamesmacaulay$elm_secd$SECD_Expressions$apply2,
-		_jamesmacaulay$elm_secd$SECD_Examples$churchTrue,
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('True'),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('False')));
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('b')));
+var _jamesmacaulay$elm_secd$SECD_Examples$churchTrue = A2(
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+	'a',
+	A2(
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
+		'b',
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('a')));
 var _jamesmacaulay$elm_secd$SECD_Examples$helloWorldIdentity = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
 	A2(
-		_jamesmacaulay$elm_secd$SECD_Expressions$apply,
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$apply,
 		A2(
-			_jamesmacaulay$elm_secd$SECD_Expressions$fn,
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$fn,
 			'x',
-			_jamesmacaulay$elm_secd$SECD_Expressions$ident('x')),
-		_jamesmacaulay$elm_secd$SECD_Expressions$ident('HelloWorld')));
+			_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('x')),
+		_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('HelloWorld')));
 var _jamesmacaulay$elm_secd$SECD_Examples$helloWorld = _jamesmacaulay$elm_secd$SECD$initSimpleMachine(
-	_jamesmacaulay$elm_secd$SECD_Expressions$ident('HelloWorld'));
+	_jamesmacaulay$elm_secd$SECD_ExpressionHelpers$ident('HelloWorld'));
 var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 	var _p1 = _p0;
 	return A2(
@@ -7763,7 +8088,7 @@ var _jamesmacaulay$elm_secd$Main$machineStateView = function (_p0) {
 											[t]));
 								}(
 									_elm_lang$html$Html$text(
-										_elm_lang$core$Basics$toString(_p4)));
+										_jamesmacaulay$elm_secd$SECD$instructionToString(_p4)));
 							},
 							_p1._2))
 					])),
@@ -7924,6 +8249,9 @@ var _jamesmacaulay$elm_secd$Main$exampleMachines = _elm_lang$core$Native_List.fr
 		{ctor: '_Tuple2', _0: '(λx.x)(HelloWorld)', _1: _jamesmacaulay$elm_secd$SECD_Examples$helloWorldIdentity},
 		{ctor: '_Tuple2', _0: '(λa.λb.a)(True)(False)', _1: _jamesmacaulay$elm_secd$SECD_Examples$showChurchTrue},
 		{ctor: '_Tuple2', _0: '(λa.λb.b)(True)(False)', _1: _jamesmacaulay$elm_secd$SECD_Examples$showChurchFalse},
+		{ctor: '_Tuple2', _0: 'Church encoding: 0 == 0', _1: _jamesmacaulay$elm_secd$SECD_Examples$zeroIsZero},
+		{ctor: '_Tuple2', _0: 'Church encoding: (1 - 1) == 0', _1: _jamesmacaulay$elm_secd$SECD_Examples$oneMinusOneIsZero},
+		{ctor: '_Tuple2', _0: 'Church encoding: (2 - 1) != 0', _1: _jamesmacaulay$elm_secd$SECD_Examples$twoMinusOneIsNotZero},
 		{ctor: '_Tuple2', _0: '1 + 2', _1: _jamesmacaulay$elm_secd$SECD_Examples$onePlusTwo},
 		{ctor: '_Tuple2', _0: '(11 - 2) + 5', _1: _jamesmacaulay$elm_secd$SECD_Examples$plusAndMinus}
 	]);
